@@ -1,12 +1,13 @@
 package com.severyn.zabara.spring.rest.controllers;
 
 import com.severyn.zabara.spring.rest.entity.Employee;
+import com.severyn.zabara.spring.rest.exceptionHandling.EmployeeIncorrectData;
+import com.severyn.zabara.spring.rest.exceptionHandling.NoSuchEmployeeException;
 import com.severyn.zabara.spring.rest.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,20 +18,19 @@ public class MyRESTController {
     private EmployeeService service;
 
     @RequestMapping("/employees")
-    public List<Employee> showAllEmployees(){
+    public List<Employee> showAllEmployees() {
 
         List<Employee> employees = service.getAllEmployees();
 
         return employees;
     }
+
     @GetMapping("/employees/{id}")
-    public Employee getEmployee(@PathVariable int id){
+    public Employee getEmployee(@PathVariable int id) {
         Employee employee = service.getEmployee(id);
+        if (employee == null) {
+            throw new NoSuchEmployeeException("there is no employee with ID = " + id + " in Database");
+        }
         return employee;
     }
-
-
-
-
-
 }

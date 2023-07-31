@@ -1,0 +1,8 @@
+package com.severyn.zabara.spring.rest.exceptionHandling;
+
+public class NoSuchEmployeeException extends RuntimeException{
+
+    public NoSuchEmployeeException(String message) {
+        super(message);
+    }
+}
